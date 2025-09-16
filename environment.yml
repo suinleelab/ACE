@@ -1,0 +1,19 @@
+name: ace
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip<24.1
+  - numpy=1.23.*
+  - scipy=1.11.*
+  - pandas=1.5.*
+  - anndata==0.8.0
+  - pip:
+    - torch==1.13.0
+    - pytorch-lightning==1.7.7
+    - scvi-tools==0.19.0
+    - rich==13.*
+    - matplotlib==3.6.2
+    - torchmetrics==0.10.2
+    - scanpy==1.9.1
