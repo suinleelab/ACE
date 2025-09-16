@@ -1,15 +1,31 @@
-# scvi-tools-skeleton
+# ACE
 
-[![Stars](https://img.shields.io/github/stars/YosefLab/scvi-tools-skeleton?logo=GitHub&color=yellow)](https://github.com/YosefLab/scvi-tools/stargazers)
-[![Documentation Status](https://readthedocs.org/projects/scvi-tools-skeleton/badge/?version=latest)](https://scvi-tools-skeleton.readthedocs.io/en/stable/?badge=stable)
-![Build Status](https://github.com/YosefLab/scvi-tools-skeleton/workflows/scvi-tools-skeleton/badge.svg)
-[![codecov](https://codecov.io/gh/YosefLab/scvi-tools-skeleton/branch/main/graph/badge.svg?token=BGI9Z8R11R)](https://codecov.io/gh/YosefLab/scvi-tools-skeleton)
-[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+**ACE (Aging Cell Embedding)** is an explainable deep generative model for **disentangling aging-related signals** from background biological variation in single-cell transcriptomic data.  
 
-Skeleton repository for creating novel models with
-[scvi-tools](https://www.scvi-tools.org/en/stable/). For questions about
-using this skeleton, please use the scvi-tools
-[forum](https://discourse.scvi-tools.org/).
+ACE builds two separate latent spaces:
+- **Aging latent space** – captures gene expression patterns related to aging  
+- **Background latent space** – models confounding factors such as tissue, cell type, or species differences  
 
+This enables ACE to identify both **global aging markers** (shared across tissues and cell types) and **local, tissue- or cell-type-specific aging signals**, and supports **cross-species alignment** of aging trajectories.  
+ACE is implemented on top of the [scvi-tools](https://scvi-tools.org/) framework.
 
-Getting started development using this skeleton is similar to [getting started](https://docs.scvi-tools.org/en/stable/contributing/index.html) with scvi-tools.
+---
+
+## Installation
+
+ACE is **not yet published to PyPI**. You can install it locally for development and testing.
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/your-username/ace.git
+   cd ace
+   ```
+2. Create and activate the Conda environment
+   ```bash
+   conda env create -f environment.yml
+   conda activate ace
+   ```
+3. Install in editable mode
+   ```bash
+   pip install -e .
+   ```
