@@ -41,7 +41,7 @@ def hsic(x, y): #, gamma=1.):
     g_y = 2 * gamma(0.5 * (d_y+1)) / gamma(0.5 * d_y)
     L = gram_matrix(y, y, gammas=1./(2. * g_y))
     
-    H = torch.eye(m) - 1.0 / m * torch.ones((m, m))
-    H = H.float().cuda()
+    H = torch.eye(m, device=x.device) - 1.0 / m * torch.ones((m, m), device=x.device)
+    H = H.float()
     HSIC = torch.trace(torch.mm(L, torch.mm(H, torch.mm(K, H)))) / ((m - 1) ** 2)
     return HSIC

@@ -1,4 +1,4 @@
-"""ace setup file. copied from the scvi-tools-skeleton repo."""
+"""ACE package initialization."""
 
 from ._constants import REGISTRY_KEYS
 
@@ -15,7 +15,10 @@ except ModuleNotFoundError:
     import importlib_metadata
 
 package_name = "ace-vi"
-__version__ = importlib_metadata.version(package_name)
+try:
+    __version__ = importlib_metadata.version(package_name)
+except importlib_metadata.PackageNotFoundError:
+    __version__ = "0.1.0"
 
 logger = logging.getLogger(__name__)
 # set the logging level

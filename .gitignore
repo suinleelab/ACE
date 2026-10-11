@@ -136,3 +136,12 @@ dmypy.json
 
 # vscode
 .vscode/settings.json
+
+# Local data and analysis outputs
+data/*.h5ad
+!data/ace_mouse_tiny.h5ad
+data/*.h5
+data/*.loom
+data/*.mtx
+results/
+*.pt
