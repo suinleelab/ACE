@@ -77,11 +77,13 @@ from ace.model import ACE
 
 adata = anndata.read_h5ad("data/ace_mouse_tiny.h5ad")
 
+adata.obs["cell_type_int"] = adata.obs["cell_type"].astype("category").cat.codes
+
 ACE.setup_anndata(
     adata,
     layer="raw_counts",
     continuous_phenotype_keys=["age_float"],
-    categorical_background_keys=["cell_type", "tissue", "sex"],
+    categorical_background_keys=["cell_type_int", "tissue", "sex"],
     batch_key="batch",
 )
 
@@ -122,10 +124,13 @@ The repository includes a small real mouse droplet example:
 data/ace_mouse_tiny.h5ad
 ```
 
-This file is a 960-cell subset of the public mouse droplet data used in the
+This file is a 3,000-cell subset of the public mouse droplet data used in the
 manuscript workflow. It contains raw counts in `layers["raw_counts"]` and the
-metadata columns needed by ACE (`age_float`, `cell_type`, `tissue`, `sex`, and
-`batch`).
+metadata columns needed by ACE (`age_float`, `cell_type`, `cell_type_int`,
+`tissue`, `sex`, and `batch`). The command-line workflow follows the manuscript
+mouse droplet setup by using `cell_type_int`, `tissue`, and `sex` as background
+keys for model training while keeping readable annotations for plots and
+evaluation metrics.
 
 Run the command-line workflow:
 
@@ -133,12 +138,14 @@ Run the command-line workflow:
 python examples/mouse_aging_workflow.py \
   --adata data/ace_mouse_tiny.h5ad \
   --output-dir results/mouse_tiny \
-  --max-epochs 1
+  --max-epochs 100 \
+  --save-all-latent
 ```
 
-The command creates `salient_latent.h5ad`, `background_latent.h5ad`,
-`age_prediction_metrics.csv`, and `salient_metrics_age_corr.csv` in the selected
-output directory.
+The command creates held-out `salient_latent.h5ad` and
+`background_latent.h5ad`, all-cell latent embeddings when `--save-all-latent` is
+used, `age_prediction_metrics.csv`, and `salient_metrics_age_corr.csv` in the
+selected output directory.
 
 The notebook `notebook/ace_mouse_tiny_example.ipynb` runs the same workflow and
 displays the evaluation metrics. It is the recommended notebook for reviewers.

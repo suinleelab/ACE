@@ -29,6 +29,7 @@ The exact columns depend on the workflow. Common columns are:
 | `age_float` | numeric | aging phenotype for mouse examples |
 | `ageDeath_float` | numeric | aging phenotype for PsychAD examples |
 | `cell_type` | categorical | background factor |
+| `cell_type_int` | categorical/integer | encoded cell type used by the mouse droplet workflow |
 | `tissue` | categorical | background factor |
 | `sex` | categorical | background factor |
 | `batch` | categorical | batch covariate |
@@ -43,7 +44,7 @@ ACE.setup_anndata(
     adata,
     layer="raw_counts",
     continuous_phenotype_keys=["age_float"],
-    categorical_background_keys=["cell_type", "tissue", "sex"],
+    categorical_background_keys=["cell_type_int", "tissue", "sex"],
     batch_key="batch",
 )
 ```
@@ -78,5 +79,7 @@ ACE.setup_anndata(
 - Filter low-quality cells and genes before ACE training.
 - Use consistent gene sets for comparisons across models.
 - Encode continuous ages as numeric columns.
+- For the mouse droplet workflow, `examples/mouse_aging_workflow.py` creates
+  `cell_type_int` from `cell_type` when it is missing.
 - Do not one-hot encode categorical columns manually; `setup_anndata` handles
   categorical registration.

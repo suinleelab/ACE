@@ -10,7 +10,7 @@ Input:
 
 - small included example: `data/ace_mouse_tiny.h5ad`
 - raw counts in `layers["raw_counts"]`
-- metadata: `age_float`, `cell_type`, `tissue`, `sex`, `batch`
+- metadata: `age_float`, `cell_type`, `cell_type_int`, `tissue`, `sex`, `batch`
 
 Reviewer quick run:
 
@@ -18,11 +18,16 @@ Reviewer quick run:
 python examples/mouse_aging_workflow.py \
   --adata data/ace_mouse_tiny.h5ad \
   --output-dir results/mouse_tiny \
-  --max-epochs 1
+  --max-epochs 100 \
+  --save-all-latent
 ```
 
 For manuscript-scale analyses, use the same command-line script with `--adata`
 pointing to a user-provided processed `.h5ad` file and increase `--max-epochs`.
+The workflow uses `cell_type_int`, `tissue`, and `sex` as background keys for
+model training, matching the mouse droplet analysis code, and uses readable
+`cell_type`, `tissue`, and `sex` annotations for plots and representation
+metrics.
 
 Outputs:
 
@@ -30,6 +35,8 @@ Outputs:
 - `background_latent.csv`
 - `age_prediction_metrics.csv`
 - `salient_metrics_age_corr.csv`
+- `salient_latent_all.h5ad` and `background_latent_all.h5ad` with
+  `--save-all-latent`
 - optional UMAP plots with `--plot`
 
 Interpretation:

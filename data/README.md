@@ -5,9 +5,10 @@ for local input files.
 
 Included file:
 
-- `ace_mouse_tiny.h5ad`: a 960-cell subset of the public mouse droplet data used
+- `ace_mouse_tiny.h5ad`: a 3,000-cell subset of the public mouse droplet data used
   by the manuscript workflow. It contains raw counts in `layers["raw_counts"]`
-  and metadata in `obs`.
+  and metadata in `obs`, including `age_float`, `cell_type`, `cell_type_int`,
+  `tissue`, `sex`, and `batch`.
 
 Large single-cell datasets used in manuscript-scale analyses are not committed
 to git. The included tiny dataset is sufficient for the reviewer quickstart and
