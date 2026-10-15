@@ -1,8 +1,8 @@
 # Notebooks
 
 `ace_mouse_tiny_example.ipynb` is the reviewer-facing notebook. It runs ACE on
-`../data/ace_mouse_tiny.h5ad`, then displays age-prediction and salient
-representation metrics.
+`../data/ace_mouse_tiny.h5ad`, then displays the six salient representation
+metrics used in the mouse droplet comparison figure.
 
 For reproducible execution, prefer the command-line script from the repository
 root:
@@ -12,7 +12,8 @@ python examples/mouse_aging_workflow.py \
   --adata data/ace_mouse_tiny.h5ad \
   --output-dir results/mouse_tiny \
   --max-epochs 100 \
-  --save-all-latent
+  --save-all-latent \
+  --skip-age-prediction
 ```
 
 The notebook and script use the same core ACE calls:

@@ -65,6 +65,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--use-gpu", action="store_true")
     parser.add_argument("--plot", action="store_true", help="Save UMAP plots with scanpy.")
     parser.add_argument("--save-all-latent", action="store_true", help="Also save latent embeddings for all cells.")
+    parser.add_argument("--skip-age-prediction", action="store_true", help="Skip ridge age prediction metrics.")
     parser.add_argument("--skip-evaluation", action="store_true", help="Skip representation metrics.")
     parser.add_argument("--metric-pairs", type=int, default=5000)
     return parser.parse_args()
@@ -161,7 +162,6 @@ def save_latent_outputs(
     test_adata: anndata.AnnData,
     args: argparse.Namespace,
 ) -> None:
-    train_salient = model.get_latent_representation(train_adata, representation_kind="salient")
     test_salient = model.get_latent_representation(test_adata, representation_kind="salient")
     test_background = model.get_latent_representation(test_adata, representation_kind="background")
 
@@ -191,22 +191,24 @@ def save_latent_outputs(
             args.output_dir / "background_latent_all.h5ad"
         )
 
-    reg = RidgeCV(alphas=np.logspace(-3, 3, 13))
-    y_train = train_adata.obs[args.age_key].astype(float).to_numpy()
-    y_test = test_adata.obs[args.age_key].astype(float).to_numpy()
-    reg.fit(train_salient, y_train)
-    pred = reg.predict(test_salient)
-    pd.DataFrame(
-        [
-            {
-                "n_train": train_adata.n_obs,
-                "n_test": test_adata.n_obs,
-                "r2": r2_score(y_test, pred),
-                "rmse": mean_squared_error(y_test, pred, squared=False),
-                "ridge_alpha": reg.alpha_,
-            }
-        ]
-    ).to_csv(args.output_dir / "age_prediction_metrics.csv", index=False)
+    if not args.skip_age_prediction:
+        train_salient = model.get_latent_representation(train_adata, representation_kind="salient")
+        reg = RidgeCV(alphas=np.logspace(-3, 3, 13))
+        y_train = train_adata.obs[args.age_key].astype(float).to_numpy()
+        y_test = test_adata.obs[args.age_key].astype(float).to_numpy()
+        reg.fit(train_salient, y_train)
+        pred = reg.predict(test_salient)
+        pd.DataFrame(
+            [
+                {
+                    "n_train": train_adata.n_obs,
+                    "n_test": test_adata.n_obs,
+                    "r2": r2_score(y_test, pred),
+                    "rmse": mean_squared_error(y_test, pred, squared=False),
+                    "ridge_alpha": reg.alpha_,
+                }
+            ]
+        ).to_csv(args.output_dir / "age_prediction_metrics.csv", index=False)
     if not args.skip_evaluation:
         trait_keys = evaluation_trait_keys(test_adata, args)
         salient_metrics = evaluate_salient_representation(

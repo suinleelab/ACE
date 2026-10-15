@@ -147,8 +147,10 @@ The command creates held-out `salient_latent.h5ad` and
 used, `age_prediction_metrics.csv`, and `salient_metrics_age_corr.csv` in the
 selected output directory.
 
-The notebook `notebook/ace_mouse_tiny_example.ipynb` runs the same workflow and
-displays the evaluation metrics. It is the recommended notebook for reviewers.
+The notebook `notebook/ace_mouse_tiny_example.ipynb` runs the same ACE training
+workflow with `--skip-age-prediction` and displays only the six representation
+metrics used in the mouse droplet comparison figure. It is the recommended
+notebook for reviewers.
 
 The reviewer quickstart and notebook do not require any external data. Larger
 analyses can use the same script with `--adata` pointing to a user-provided
